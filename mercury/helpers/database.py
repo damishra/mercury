@@ -1,14 +1,10 @@
-import asyncio
-import asyncpg
+from os import environ
 
 
-async def run():
-    connection = await asyncpg.connect(user='admin', password='BoltBolt6126', database='mercury', host='127.0.0.1')
-    values = await connection.fetch(
-        'SELECT * FROM mytable WHERE id = $1',
-        10,
-    )
-    await connection.close()
+DBHOST = environ.get('DBHOST')
+DBPORT = environ.get('DBPORT')
+DBUSER = environ.get('DBUSER')
+DBPASS = environ.get('DBPASS')
+DBNAME = environ.get('DBNAME')
 
-loop = asyncio.get_event_loop()
-loop.run_until_complete(run())
+DBURI = f"postgres://{DBUSER}:{DBPASS}@{DBHOST}:{DBPORT}/{DBNAME}"
