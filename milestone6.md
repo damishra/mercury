@@ -57,16 +57,19 @@ performance specialized driver. Something that we were not able to find a good
 replacement for in nodejs without using an orm based driver.
 
 ### Testing
+We are using the inbuilt fastapi test client along with the pytest library to
+test our crud functionality. Example code is in the `test_auth.py` file in the
+project root.
+
+Before running the script, remeber to add your own credentials in. The `JWTKEY`
+can be left as is.
 
 ####Test Script Configuration
-Before running the test, make sure the following package listed in the requirement is installed. 
+To setup your environment, it is recommended to make a virtual environment in
+the project root with venv: `python3 -m venv venv`, and then installing the
+requirements with `pip install -r requirements.txt`.
 
 #### Running the Test
-Once the package has been installed, you may begin running the test using the following command
+To run the tests, use the `runme_win.ps1` file for powershell and the
+`runme_nix.sh` file for bash/zsh.
 
-```
-python3 <filename>
-```
-
-#### auth.py
-[Screenshot]
