@@ -26,7 +26,7 @@ group:
      -  **BootStrap**
 - GitHub
     - ~~GitHub URL: https://github.com/europa-report~~
-    - GitHub URL: https://github.com/Mercury-DDS/The-Data-Delivery-System
+    - GitHub URL: https://github.com/damishra/mercury
 
 ### Performance and Refactoring
 

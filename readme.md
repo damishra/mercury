@@ -28,7 +28,7 @@ group:
     -   **React.js**
     -   **BootStrap**
 -   GitHub
-    -   GitHub URL: https://github.com/Mercury-DDS/The-Data-Delivery-System
+    -   GitHub URL: https://github.com/damishra/mercury
 
 We have opted to go with python in this rewrite as this gives us access to
 FastAPI, a library written almost entirely with speed in mind. It has it's
