@@ -1,8 +1,8 @@
-$env:DBHOST = "localhost";
-$env:DBPORT = "5432";
-$env:DBUSER = "admin";
-$env:DBPASS = "BoltBolt6126";
-$env:DBNAME = "mercury";
-$env:JWTKEY = "12345678910";
+$env:DBHOST = "database host";
+$env:DBPORT = "database port";
+$env:DBUSER = "database user";
+$env:DBPASS = "database pass";
+$env:DBNAME = "database name";
+$env:JWTKEY = "1234567891011";
 
-#uvicorn mercury.main:app
+pytest

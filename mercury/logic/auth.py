@@ -64,8 +64,11 @@ async def update(uid: str, username: str, password: str, email: str) -> str:
         result = await statement.fetchrow(uid)
         if username == None or username == result['username']:
             username = result['username']
-        if password == None or HASHER.verify(result['password'], password.encode('utf-8')):
-            password = result['password']
+        try:
+            if password == None or HASHER.verify(result['password'], password.encode('utf-8')):
+                password = result['password']
+        except Exception:
+            pass
         if email == None or email == result['email']:
             email = result['email']
         statement: PreparedStatement = await connection.prepare(UPDATEQ)
