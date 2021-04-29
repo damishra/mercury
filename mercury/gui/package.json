@@ -1,0 +1,31 @@
+{
+  "name": "mercury",
+  "version": "1.0.0",
+  "description": "Copyright 2021 Dishant Mishra, Vincent Cheng",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/damishra/mercury"
+  },
+  "bugs": {
+    "url": "https://github.com/damishra/mercury"
+  },
+  "homepage": "https://github.com/damishra/mercury",
+  "dependencies": {
+    "@emotion/babel-plugin": "^11.2.0",
+    "@emotion/react": "^11.1.5",
+    "@material-ui/core": "^4.11.3",
+    "@material-ui/icons": "^4.11.2",
+    "bootstrap": "^4.6.0",
+    "next": "^10.0.9",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-router-dom": "^5.2.0",
+    "yarn": "^1.22.10"
+  }
+}
