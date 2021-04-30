@@ -11,27 +11,26 @@ from datetime import datetime
 from argon2 import PasswordHasher, Type
 
 
-HASHER = PasswordHasher(type=Type.ID)
+HASHER = PasswordHasher(type=Type.ID, hash_len=32,
+                        memory_cost=4096, time_cost=3, parallelism=1)
 
 
-INSERTQ = "INSERT INTO auth VALUES ($1::uuid, $2::varchar, $3::bytea, $4::varchar, $5::bigint, $6::bigint)"
-UPDATEQ = "UPDATE auth SET username = $2::varchar, password = $3::bytea, email = $4::varchar, updated = $5::bigint WHERE id = $1::uuid"
-PASSWDQ = "SELECT id, password FROM auth WHERE username = $1::varchar"
-SELECTQ = "SELECT username, password, email FROM auth WHERE id = $1::uuid"
-DELETEQ = "DELETE FROM auth WHERE id = $1::uuid"
+INSERTQ = "INSERT INTO public.user VALUES ($1::uuid, $2::varchar, $3::varchar, $4::varchar)"
+UPDATEQ = "UPDATE public.user SET username = $2::varchar, password = $3::varchar, email = $4::varchar WHERE id = $1::uuid"
+PASSWDQ = "SELECT id, password FROM public.user WHERE username = $1::varchar"
+SELECTQ = "SELECT username, password, email FROM public.user WHERE id = $1::uuid"
+DELETEQ = "DELETE FROM public.user WHERE id = $1::uuid"
 
 
 async def register(username: str, password: str, email: str) -> str:
     try:
         id = uuid4()
-        hashed_password = HASHER.hash(password.encode('UTF-8'))
-        created = int(datetime.utcnow().timestamp())
-        updated = int(datetime.utcnow().timestamp())
+        hashed_password = HASHER.hash(password)
         connection: Connection = await asyncpg.connect(dsn=DBURI)
         statement: PreparedStatement = await connection.prepare(INSERTQ)
-        await statement.fetchval(id, username, hashed_password.encode('UTF-8'), email, created, updated)
+        await statement.fetchval(id, username, hashed_password, email)
         await connection.close()
-        return id.hex
+        return str(id)
     except Exception:
         raise HTTPException(
             status_code=500, detail="internal server error")
@@ -44,10 +43,10 @@ async def login(username: str, password: str) -> Union[str, None]:
         result = await statement.fetchrow(username)
         await connection.close()
         id = result["id"]
-        hashed_password = result["password"]
-        if HASHER.verify(hashed_password, password.encode("UTF-8")):
+        hashed_password: str = result["password"]
+        if HASHER.verify(hashed_password, password):
             return encode(
-                {"id": id.hex, "exp": int(
+                {"id": str(id), "exp": int(
                     datetime.utcnow().timestamp()) + 21600},
                 environ.get("JWTKEY"), algorithm="HS256")
     except Exception:
@@ -56,8 +55,7 @@ async def login(username: str, password: str) -> Union[str, None]:
 
 async def update(uid: str, username: str, password: str, email: str) -> str:
     id = UUID(hex=uid)
-    hashed_password = HASHER.hash(password.encode('UTF-8'))
-    updated = int(datetime.utcnow().timestamp())
+    hashed_password = HASHER.hash(password)
     try:
         connection: Connection = await asyncpg.connect(dsn=DBURI)
         statement: PreparedStatement = await connection.prepare(SELECTQ)
@@ -65,16 +63,16 @@ async def update(uid: str, username: str, password: str, email: str) -> str:
         if username == None or username == result['username']:
             username = result['username']
         try:
-            if password == None or HASHER.verify(result['password'], password.encode('utf-8')):
+            if password == None or HASHER.verify(result['password'], password):
                 password = result['password']
         except Exception:
             pass
         if email == None or email == result['email']:
             email = result['email']
         statement: PreparedStatement = await connection.prepare(UPDATEQ)
-        await statement.fetchrow(id, username, hashed_password.encode('utf-8'), email, updated)
+        await statement.fetchrow(id, username, hashed_password, email)
         await connection.close()
-        return id.hex
+        return str(id)
     except Exception:
         raise HTTPException(
             status_code=500, detail="internal server error")
@@ -87,6 +85,6 @@ async def delete(uid: str) -> str:
         statement: PreparedStatement = await connection.prepare(DELETEQ)
         await statement.fetchrow(id)
         await connection.close()
-        return id.hex
+        return str(id)
     except Exception:
         raise HTTPException(status_code=500, detail="internal server error")
