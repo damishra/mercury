@@ -12,8 +12,6 @@ group:
 
 # Mercury - The Data Delivery System
 ## Project Description
-Survey software has been heavily use for marketing purposes and research. We wanted to have a back-end API system, that would allow people to create their own set of applications with their own questions times and etc.
-
 Mercury is the brainchild of Vincent Cheng and Dishant Mishra. We have been
 frustrated with the numerous survey tools and products in the market and how
 they do not offer the flexibility certain use cases demand. We decided to solve
