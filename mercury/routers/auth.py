@@ -8,7 +8,7 @@ from fastapi import APIRouter
 router = APIRouter(prefix="/auth")
 
 
-@router.post("/login", tags=["auth", "login"])
+@router.post("/login", tags=["login"])
 async def user_login(user: User):
     token: Union[str, None]
     response: JSONResponse
@@ -24,19 +24,19 @@ async def user_login(user: User):
     return response
 
 
-@router.post("/register", tags=["auth", "register"])
+@router.post("/register", tags=["register"])
 async def user_register(user: User):
     generated_id = await register(user.username, user.password, user.email)
     return JSONResponse(content={'id': generated_id}, status_code=201)
 
 
-@router.put("/update/{user_id}", tags=["auth", "update"])
+@router.put("/update/{user_id}", tags=["update"])
 async def user_update(user_id: str, user: User):
     generated_id = await update(user_id, user.username, user.password, user.email)
     return JSONResponse(content={'id': generated_id}, status_code=202)
 
 
-@router.delete("/delete/{user_id}", tags=["auth", "delete"])
+@router.delete("/delete/{user_id}", tags=["delete"])
 async def user_delete(user_id: str):
     generated_id = await delete(user_id)
     return JSONResponse(content={'id': generated_id}, status_code=202)

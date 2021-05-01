@@ -6,13 +6,13 @@ from mercury.logic.users import get_user, get_users
 router = APIRouter(prefix="/users")
 
 
-@router.get('/users')
+@router.get('/')
 async def fetch_users():
     users = await get_users()
-    JSONResponse(content=users, status_code=200)
+    return JSONResponse(content=users, status_code=200)
 
 
-@router.get('/users/{user_id}')
+@router.get('/{user_id}')
 async def fetch_user(user_id: str):
     user = await get_user(user_id)
-    JSONResponse(content=user, status_code=200)
+    return JSONResponse(content=user, status_code=200)
