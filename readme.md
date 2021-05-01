@@ -14,6 +14,19 @@ group:
 ## Project Description
 Survey software has been heavily use for marketing purposes and research. We wanted to have a back-end API system, that would allow people to create their own set of applications with their own questions times and etc.
 
+Mercury is the brainchild of Vincent Cheng and Dishant Mishra. We have been
+frustrated with the numerous survey tools and products in the market and how
+they do not offer the flexibility certain use cases demand. We decided to solve
+the problem by coming up with an open ended API-only solution where the users
+will only have to deal with four base data repositories - User, Survey,
+Question, and Response. Question and Response are two highly malleable
+repositories that allow users to create their own question types, and store
+their responses. This is made possible thanks to postgres' flexible JSONB
+datatype.
+
+Think of this as a SaaS (Software as a Service), where we handle the auth and
+storage, and the user does whatever they want with our flexible storage system.
+
 ## Project Requirement
 
 -   Relational Database
