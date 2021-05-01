@@ -1,8 +1,8 @@
 ```yaml
 milestone:
-    iteration: 05
-    title: 'Performance and Refactoring'
-    date: 'April 9, 2021'
+    iteration: 07
+    title: 'Deployment Packaging'
+    date: 'April 30, 2021'
 group:
     number: 06
     name: 'Mercury- The Data Delivery System'
@@ -23,7 +23,7 @@ group:
 
 -   Back-end
     -   ~~**MySQL/MariaDB, ExpressJS, NodeJS**~~
-    -   Refactoring/Opted for Postgres, FastAPI, Python
+    -   Refactoring/Opted for FastAPI, Python/asyncio, PostgreSQL/asyncpg and supadb (remote database)
 -   Front-end
     -   **React.js**
     -   **BootStrap**
