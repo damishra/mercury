@@ -15,11 +15,21 @@ HASHER = PasswordHasher(type=Type.ID, hash_len=32,
                         memory_cost=4096, time_cost=3, parallelism=1)
 
 
-INSERTQ = "INSERT INTO public.user VALUES ($1::uuid, $2::varchar, $3::varchar, $4::varchar)"
-UPDATEQ = "UPDATE public.user SET username = $2::varchar, password = $3::varchar, email = $4::varchar WHERE id = $1::uuid"
-PASSWDQ = "SELECT id, password FROM public.user WHERE username = $1::varchar"
-SELECTQ = "SELECT username, password, email FROM public.user WHERE id = $1::uuid"
-DELETEQ = "DELETE FROM public.user WHERE id = $1::uuid"
+INSERTQ = """--begin-sql
+INSERT INTO public.user VALUES ($1::uuid, $2::varchar, $3::varchar, $4::varchar)
+--end-sql"""
+UPDATEQ = """--begin-sql
+UPDATE public.user SET username = $2::varchar, password = $3::varchar, email = $4::varchar WHERE id = $1::uuid
+--end-sql"""
+PASSWDQ = """--begin-sql
+SELECT id, password FROM public.user WHERE username = $1::varchar
+--end-sql"""
+SELECTQ = """--begin-sql
+SELECT username, password, email FROM public.user WHERE id = $1::uuid
+--end-sql"""
+DELETEQ = """--begin-sql
+DELETE FROM public.user WHERE id = $1::uuid
+--end-sql"""
 
 
 async def register(username: str, password: str, email: str) -> str:

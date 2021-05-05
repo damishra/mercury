@@ -17,7 +17,7 @@ async def user_login(user: User):
         response = JSONResponse(
             content={'message': 'logged in successfully'}, status_code=200)
         response.set_cookie(
-            key="token", value=f"bearer {token}", httponly=True, max_age=21600)
+            key="token", value=f"{token}", httponly=True, max_age=21600)
     else:
         response = JSONResponse(
             content={'message': 'login failed'}, status_code=400)
