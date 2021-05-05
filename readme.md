@@ -11,7 +11,7 @@ group:
 ```
 
 # Mercury - The Data Delivery System
-
+## Project Description
 Mercury is the brainchild of Vincent Cheng and Dishant Mishra. We have been
 frustrated with the numerous survey tools and products in the market and how
 they do not offer the flexibility certain use cases demand. We decided to solve
@@ -27,7 +27,6 @@ storage, and the user does whatever they want with our flexible storage system.
 
 ## Project Requirement
 
--   24/7 Shared Server
 -   Relational Database
 -   API Queries
 -   Object-Oriented Programming Language
@@ -36,11 +35,10 @@ storage, and the user does whatever they want with our flexible storage system.
 
 -   Back-end
     -   ~~**MySQL/MariaDB, ExpressJS, NodeJS**~~
-    -   Refactoring/Opted for FastAPI, Python/asyncio, PostgreSQL/asyncpg and
-        supadb (remote database)
+    -   Refactoring/Opted for FastAPI, Python/asyncio, PostgreSQL/asyncpg and supadb (remote database)
 -   Front-end
-    -   **React.js**
-    -   **BootStrap**
+    -   ~~**React.js**~~
+    -   Opted for Python
 -   GitHub
     -   GitHub URL: https://github.com/damishra/mercury
 
@@ -68,7 +66,7 @@ with postgres. This driver is also highly optimized as it has its internals
 written in Cython. This library allows us to use raw SQL asynchronously which is
 good for optimizing reads.
 
-## Testing
+#### Testing
 
 We are using the inbuilt fastapi test client along with the pytest library to
 test our crud functionality. Example code is in the `test_auth.py` file in the
@@ -84,7 +82,7 @@ To run the tests, use the `runme_win.ps1` file for powershell and the
 Before running the script, remeber to add your own credentials in. The `JWTKEY`
 can be left as is.
 
-## Refactoring - Design
+#### Refactoring - Design
 
 One of the benefits of going with FastAPI is that it is design agnostic. This
 allows us to use any design pattern we desire to organize our project. We
@@ -95,7 +93,8 @@ The project rewrite is allowing us to use postgres from the start with a high
 performance specialized driver. Something that we were not able to find a good
 replacement for in nodejs without using an orm based driver.
 
-## Packaging and Deployment
+
+### Packaging and Deployment
 
 Since this is almost an entirely pythonic project, packaging is a
 non-requirement, and deployment is easy. The project is available at
@@ -106,7 +105,7 @@ environment with the venv module before installing the dependencies as this
 project uses some default python packages that might cause issues with the OS's
 python environment. The instructions to deploy are as follows:
 
-### Unix
+#### Unix
 
 ```bash
 $bash[damishra::/home] git clone https://github.com/damishra/mercury.git
@@ -120,7 +119,7 @@ $bash[damishra::/home/mercury] source ./venv/Scripts/activate
 # the project is now deployed on port 8000
 ```
 
-### Windows
+#### Windows
 
 ```powershell
 PS C:\Users\damishra\Desktop> git clone https://github.com/damishra/mercury.git
