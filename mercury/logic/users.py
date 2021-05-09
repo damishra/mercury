@@ -32,7 +32,7 @@ async def get_users():
                 users.append({
                     "id": str(result['id']),
                     "username": result['username'],
-                    "avatar": f"https://avatars.dicebear.com/api/avataaars/{str(result['id'])}",
+                    "avatar": f"https://avatars.dicebear.com/api/avataaars/{str(result['id'])}.svg",
                     "url": f"{BASEURL}/users/{str(result['id'])}",
                     "surveys": [],
                 })
@@ -67,7 +67,7 @@ async def get_user(uid: str):
         user = {
             "id": str(results[0]["id"]),
             "username": results[0]["username"],
-            "avatar": f"https://avatars.dicebear.com/api/avataaars/{str(results[0]['id'])}",
+            "avatar": f"https://avatars.dicebear.com/api/avataaars/{str(results[0]['id'])}.svg",
             "surveys": [],
         }
         for result in results:
