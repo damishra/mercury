@@ -1,7 +1,8 @@
+from fastapi.params import Cookie
 from mercury.types.user import User
-from typing import Union
+from typing import Optional, Union
 from fastapi.responses import JSONResponse
-from mercury.logic.auth import register, login, update, delete
+from mercury.logic.auth import register, login, update, delete, check_token
 from fastapi import APIRouter
 
 
@@ -30,13 +31,13 @@ async def user_register(user: User):
     return JSONResponse(content={'id': generated_id}, status_code=201)
 
 
-@router.put("/update/{user_id}", tags=["update"])
-async def user_update(user_id: str, user: User):
-    generated_id = await update(user_id, user.username, user.password, user.email)
+@router.put("/update", tags=["update"])
+async def user_update(user: User, token: Optional[str] = Cookie(None)):
+    generated_id = await update(await check_token(token), user.username, user.password, user.email)
     return JSONResponse(content={'id': generated_id}, status_code=202)
 
 
-@router.delete("/delete/{user_id}", tags=["delete"])
-async def user_delete(user_id: str):
-    generated_id = await delete(user_id)
+@router.delete("/delete", tags=["delete"])
+async def user_delete(token: Optional[str] = Cookie(None)):
+    generated_id = await delete(await check_token(token))
     return JSONResponse(content={'id': generated_id}, status_code=202)

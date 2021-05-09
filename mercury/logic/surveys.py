@@ -8,18 +8,18 @@ from mercury.helpers.path import BASEURL
 
 
 GETSURVEYS = """--begin-sql
-SELECT DISTINCT survey.id, survey.title, public.user.id as `user_id`, public.user.username, COUNT(question.id) as questions 
+SELECT DISTINCT survey.id, survey.title, public.user.id as user_id, public.user.username, COUNT(question.id) as questions 
 FROM survey JOIN public.user ON survey.creator_id = public.user.id 
 FULL JOIN question ON question.survey_id = survey.id 
-GROUP BY survey.id, public.user.username
+GROUP BY survey.id, public.user.id
 --end-sql"""
 
 GETSURVEY = """--begin-sql
-SELECT survey.id, survey.title, survey.creator_id, public.user.username, question.id as `q_id`, question.question, question.type, question.options, question.index 
+SELECT survey.id, survey.title, survey.creator_id, public.user.username, question.id as q_id, question.question, question.type, question.options, question.index 
 FROM survey JOIN public.user ON survey.creator_id = public.user.id 
 FULL JOIN question ON question.survey_id = survey.id 
 WHERE survey.id = $1::uuid
-GROUP BY survey.id, question.index, question.id 
+GROUP BY survey.id, question.id, public.user.id
 --end-sql"""
 
 CREATESURVEY = """--begin-sql
@@ -31,7 +31,7 @@ UPDATE survey SET title = $1::varchar WHERE id = $2::uuid
 --end-sql"""
 
 DELETESURVEY = """--begin-sql
-DELETE FROM survey WHERE id = $1::uuid
+DELETE FROM survey WHERE id = $1::uuid AND creator_id = $2::uuid
 --end-sql"""
 
 
@@ -43,12 +43,12 @@ async def get_all_surveys():
         surveys = []
         for result in results:
             survey = {
-                "id": result['id'],
+                "id": str(result['id']),
                 "title": result['title'],
                 "questions": result['questions'],
                 "url": f"{BASEURL}/surveys/{result['id']}",
                 "creator": {
-                    "id": result['user_id'],
+                    "id": str(result['user_id']),
                     "username": result['username'],
                     "url": f"{BASEURL}/users/{result['user_id']}"
                 }
@@ -66,9 +66,9 @@ async def get_one_survey(sid: str):
         statement: PreparedStatement = await connection.prepare(GETSURVEY)
         result = await statement.fetch(UUID(sid))
         survey = {
-            "id": result['id'],
-            "title": result['title'],
-            "author": result['username'],
+            "id": str(result[0]['id']),
+            "title": result[0]['title'],
+            "author": result[0]['username'],
             "author_url": f"{BASEURL}/surveys/{result[0]['creator_id']}",
             "questions": []
         }
@@ -76,11 +76,11 @@ async def get_one_survey(sid: str):
         for question in result:
             survey["questions"].append({
                 "index": question['index'],
-                "id": question['q_id'],
+                "id": str(question['q_id']),
                 "question": question['question'],
                 "type": question['type'],
                 "options": question['options'],
-            })
+            }) if question['q_id'] is not None else ""
 
         return survey
     except Exception:
@@ -100,11 +100,11 @@ async def create_survey(title: str, author: str):
             status_code=500, detail="internal server error")
 
 
-async def update_survey(sid: str):
+async def delete_survey(sid: str, cid: str):
     try:
         connection: Connection = await asyncpg.connect(dsn=DBURI)
         statement: PreparedStatement = await connection.prepare(DELETESURVEY)
-        await statement.fetchrow(UUID(sid))
+        await statement.fetchrow(UUID(sid), UUID(cid))
         return sid
     except Exception:
         raise HTTPException(

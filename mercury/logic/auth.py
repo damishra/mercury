@@ -2,7 +2,7 @@ from mercury.helpers.database import DBURI
 from typing import Union
 from asyncpg import Connection
 import asyncpg
-from jwt import encode
+from jwt import encode, decode
 from os import environ
 from fastapi.exceptions import HTTPException
 from asyncpg.prepared_stmt import PreparedStatement
@@ -98,3 +98,12 @@ async def delete(uid: str) -> str:
         return str(id)
     except Exception:
         raise HTTPException(status_code=500, detail="internal server error")
+
+
+async def check_token(token: str):
+    try:
+        data = decode(token, environ.get("JWTKEY"), algorithms=["HS256"])
+        return data["id"]
+    except Exception:
+        raise HTTPException(
+            status_code=401, detail="not found")
