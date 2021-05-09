@@ -32,6 +32,7 @@ async def get_users():
                 users.append({
                     "id": str(result['id']),
                     "username": result['username'],
+                    "avatar": f"https://avatars.dicebear.com/api/avataaars/{str(result['id'])}",
                     "url": f"{BASEURL}/users/{str(result['id'])}",
                     "surveys": [],
                 })
@@ -63,8 +64,12 @@ async def get_user(uid: str):
         connection: Connection = await asyncpg.connect(dsn=DBURI)
         statement: PreparedStatement = await connection.prepare(GETUSER)
         results = await statement.fetch(id)
-        user = {"id": str(results[0]["id"]),
-                "username": results[0]["username"], "surveys": []}
+        user = {
+            "id": str(results[0]["id"]),
+            "username": results[0]["username"],
+            "avatar": f"https://avatars.dicebear.com/api/avataaars/{str(results[0]['id'])}",
+            "surveys": [],
+        }
         for result in results:
             if result["id"] == result["creator_id"]:
                 user["surveys"].append(
