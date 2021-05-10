@@ -41,6 +41,8 @@ storage, and the user does whatever they want with our flexible storage system.
     -   Opted for Python
 -   GitHub
     -   GitHub URL: https://github.com/damishra/mercury
+-   Heroku
+    -   Host URL:   https://mercury-surveyor.herokuapp.com/docs
 
 We have opted to go with python in this rewrite as this gives us access to
 FastAPI, a library written almost entirely with speed in mind. It has it's
