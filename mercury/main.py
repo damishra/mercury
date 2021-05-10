@@ -7,7 +7,7 @@ from mercury.routers import auth, users, surveys
 app = FastAPI()
 
 
-@app.get('/')
+@app.get('/', tags=['documentation'])
 async def root():
     return RedirectResponse(url="/docs")
 
