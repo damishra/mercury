@@ -100,7 +100,7 @@ replacement for in nodejs without using an orm based driver.
 
 Since this is almost an entirely pythonic project, packaging is a
 non-requirement, and deployment is easy. The project is available at
-<https://github.com/damishra/mercury>.
+<https://github.com/damishra/mercury>. Project Demo: https://mercury-surveyor.herokuapp.com/docs
 
 The minimum supported python version is v3.7. We recommend creating a virtual
 environment with the venv module before installing the dependencies as this
