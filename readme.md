@@ -41,6 +41,8 @@ storage, and the user does whatever they want with our flexible storage system.
     -   Opted for Python
 -   GitHub
     -   GitHub URL: https://github.com/damishra/mercury
+-   Heroku
+    -   Host URL:   https://mercury-surveyor.herokuapp.com/docs
 
 We have opted to go with python in this rewrite as this gives us access to
 FastAPI, a library written almost entirely with speed in mind. It has it's
@@ -98,7 +100,7 @@ replacement for in nodejs without using an orm based driver.
 
 Since this is almost an entirely pythonic project, packaging is a
 non-requirement, and deployment is easy. The project is available at
-<https://github.com/damishra/mercury>.
+<https://github.com/damishra/mercury>. Project Demo: https://mercury-surveyor.herokuapp.com/docs
 
 The minimum supported python version is v3.7. We recommend creating a virtual
 environment with the venv module before installing the dependencies as this
