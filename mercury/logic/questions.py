@@ -5,6 +5,11 @@ from fastapi.exceptions import HTTPException
 from asyncpg.prepared_stmt import PreparedStatement
 from uuid import UUID, uuid4
 
+
+GETAUTHID = """--begin-sql
+SELECT public.user.id FROM survey JOIN public.user ON survey.creator_id = public.user.id WHERE survey.id = $1::uuid GROUP BY public.user.id
+--end-sql"""
+
 CREATEQUESTION = """--begin-sql
 INSERT INTO question VALUES ($1:uuid, $2::text, $3::varchar, $4::jsonb, $5::uuid, $6::int)
 --end-sql"""

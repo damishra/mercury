@@ -54,6 +54,8 @@ async def get_all_surveys():
                 }
             }
             surveys.append(survey)
+
+        await connection.close()
         return surveys
     except Exception:
         raise HTTPException(
@@ -82,6 +84,7 @@ async def get_one_survey(sid: str):
                 "options": question['options'],
             }) if question['q_id'] is not None else ""
 
+        await connection.close()
         return survey
     except Exception:
         raise HTTPException(
@@ -94,7 +97,21 @@ async def create_survey(title: str, author: str):
         connection: Connection = await asyncpg.connect(dsn=DBURI)
         statement: PreparedStatement = await connection.prepare(CREATESURVEY)
         await statement.fetchrow(id, title, UUID(author))
+        await connection.close()
         return str(id)
+    except Exception:
+        raise HTTPException(
+            status_code=500, detail="internal server error")
+
+
+async def update_survey(sid: str, title: str):
+    try:
+        id = UUID(sid)
+        connection: Connection = await asyncpg.connect(dsn=DBURI)
+        statement: PreparedStatement = await connection.prepare(UPDATESURVEY)
+        await statement.fetchval(title, id)
+        await connection.close()
+        return sid
     except Exception:
         raise HTTPException(
             status_code=500, detail="internal server error")
@@ -105,6 +122,7 @@ async def delete_survey(sid: str, cid: str):
         connection: Connection = await asyncpg.connect(dsn=DBURI)
         statement: PreparedStatement = await connection.prepare(DELETESURVEY)
         await statement.fetchrow(UUID(sid), UUID(cid))
+        await connection.close()
         return sid
     except Exception:
         raise HTTPException(
